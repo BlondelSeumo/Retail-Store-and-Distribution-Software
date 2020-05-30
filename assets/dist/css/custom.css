@@ -1,0 +1,517 @@
+body{
+
+font-size:16px !important;
+}
+
+.main-sidebar{
+	background-color: #eee;
+}
+.dropdown-menu>li>a{
+	border-bottom:1px solid #ccc;
+	padding:13px 0 13px 0 ;
+	color: #004b77;
+}
+.dropdown-menu>li>a
+{
+	padding: 10px;
+}
+.dropdown-menu>li>i
+{
+	color:#000;
+	padding-left:10%;
+}
+#notifications {
+	cursor: pointer;
+	position: fixed;
+	right: 0px;
+	z-index: 9999;
+	top: 0px;
+	margin-top: 22px;
+	margin-right: 15px;
+	max-width: 300px;
+}
+
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button
+{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+.dashboard_text
+{
+	color: #fff;
+	font-size: 14px !important;
+}
+.barcode-section
+{
+	margin-top: 40px;
+}
+.each_code
+{
+	margin-bottom: 5%;
+}
+.amount-box
+{
+	margin: 10px 0px;
+	width: 100px;
+	text-align: center;
+}
+.total-grid-values
+{
+	background-color: #f7f7f7;
+	border-bottom: 2px solid #fff;
+	padding-top: 10px;
+}
+.total_amount_area
+{
+	margin-top: 2px;
+	padding-bottom: 2px;
+}
+#cash_given_to_customer
+{
+	display: block;
+	margin-top: 12px;
+}
+.cash_given_to_customer_div
+{
+	font-size: 20px;
+	padding-top: 12px;
+}
+.search_result
+{
+	background-color: #eee;
+	list-style: none;
+	position: absolute;
+	z-index: 999;
+	padding: 10px;
+	padding-top: 0px;
+	border-radius: 2px;
+	width: 95.5%;
+	max-height: 400px;
+	overflow-y: scroll;
+}
+.search_result li
+{
+	border-bottom: 1px solid #ccc;
+	padding: 5px;
+	font-size:16px;
+
+}
+.search_result li:hover
+{
+	cursor: pointer;
+	background-color: #fff;
+}
+
+.cross_search_result
+{
+	text-align: right;
+	padding: 0px;
+
+}
+.cross_search_result>i
+{
+	font-size: 24px;
+
+}
+.cross_search_result:hover
+{
+	cursor: pointer;
+}
+.instructions
+{
+	font-size: 12px;
+	background-color: #fff;
+	padding: 5px;
+}
+.field-agjust
+{
+	margin-right: 20px;
+}
+label
+{
+	font-weight: normal;
+}
+.box-label
+{
+	display: block;
+}
+.purchase-box
+{
+  background-color: #fbf9f9;
+  border-radius: 3px;
+}
+.purchase-box small
+{
+	color: #777;
+}
+.purchase-heading
+{
+	border-radius: 3px;
+	padding: 7px;
+	color: #fff;
+}
+.purchase-heading>small
+{
+	color: #fff;
+	display: block;
+	font-style: italic;
+	padding-top: 3px;
+}
+.purchase-top-header
+{
+	display: inline-block;
+}
+.box-bg
+{
+	background-color: #fdfcfc;
+	padding: 20px;
+}
+.make-container-center
+{
+	margin-left: 20px;
+}
+.bg-setting-product
+{
+	background-color: #f9f9f9;
+	border-bottom: 1px solid #eee;
+	box-shadow:0px 0px 2px 0px #ccc;
+}
+.supply_fields
+{
+	width: 75px;
+	text-align: center;
+	margin-bottom: 5px;
+}
+.supply-total-amount
+{
+	width: 175px;
+	font-size: 25px;
+	border:none;
+}
+#expense-type-id
+{
+	display: none;
+}
+.border-bottom-journal
+{
+	border-bottom: 1px solid #eee;
+}
+.accounts_total_amount
+{
+	width: 150px;
+	border:none;
+	outline: none;
+	padding: 5px;
+}
+.transaction_validity
+{
+	color: #c00;
+	font-weight: bold;
+	height: 45px;
+	text-align: right;
+}
+.income-style
+{
+	background-color: #84969e;
+	padding: 12px;
+	width: 100%;
+	display: inline-block;
+	color: #fff;
+	border-radius: 2px;
+}
+.income-style-sub
+{
+	background-color: #d4e3ea;
+	padding: 5px;
+	width: 100%;
+	display: inline-block;
+	border-radius: 2px;
+}
+.total-income
+{
+	background-color: #84969e !important;
+	border:none;
+	color: #fff;
+}
+.balancesheet-header
+{
+	background-color: #84969e !important;
+	border:none;
+	color: #fff;
+}
+.balancesheet-row
+{
+	background-color: #d4e3ea !important;
+	border:none;
+}
+.ledger_head
+{
+	background-color: #84969e !important;
+	border:none;
+	padding: 15px;
+	font-size: 18px;
+	text-transform: uppercase;
+	color: #fff;
+}
+
+.ledger_row_head
+{
+	background-color: #d4e3ea !important;
+	border:none;
+	padding: 10px;
+}
+.ledger-table-head
+{
+	background-color: #d6d6d6 !important;
+	border:none;
+	padding: 10px;
+}
+.narration
+{
+	background-color: #d4e3ea;
+	border:none;
+}
+.general-journal-credit
+{
+	padding-left: 7%;
+}
+.total_amount_area_row
+{
+	background-color: #f7f7f7;
+}
+.row-buttons
+{
+	background-color: #f7f7f7;
+	padding:15px  15px 0px 15px;
+}
+.header_row
+{
+  padding: 6px 10px;
+  color: #fff;
+
+}
+.link-settting
+{
+  font-size: 14px;
+}
+.icon-settings
+{ 
+  font-size: 14px;
+}
+.nav>ul
+{
+	text-align: center;
+}
+.nav>li>a
+{
+    padding: 7px 11px 3px 12px;
+}
+.navbar
+{
+    box-shadow: 15px 12px 56px -26px #333;
+}
+.navbar-toggle i
+{
+	color : #337ab7;
+}
+.responsive-color-list a:hover
+{
+	background-color: #e7e7e7;
+}
+.homescreen-icon
+{
+	margin-top: 24px;
+	
+}
+.alignment-icons
+{
+	margin-left: 15px;
+}
+.privious_balance>input
+{
+	width: 100px;
+	border:none;
+}
+.select2-container
+{
+	width:100% !important;
+}
+.content-wrapper
+{
+	min-height: 0% !important;
+	padding-top: 0.5%;
+}
+.cheque-fields
+{
+	border:none;
+	border-bottom: 1px solid #ccc;
+	background-color: transparent;
+
+}
+.cheque-setting-top
+{
+	margin-top: 3%;
+}
+.cheque-area-border
+{
+	border:1px solid #eee;
+	border-radius: 3px;
+}
+.bank-balance
+{
+	margin-top: 5px;
+}
+.titles-section
+{
+	padding: 2% 0;
+	margin:1% 0;
+}
+.btn-submit-cheque
+{
+	margin-top: 1%;
+}
+#existing_account
+{
+	display: none;
+}
+
+#prescribtion_id:hover 
+{
+    background-color: #000;
+    opacity: 0.2;
+    cursor: pointer;
+}
+#prescribtion_id>img 
+{
+    width: 80px;
+    height: 80px;
+    margin-left: 14px;
+}
+.profile-user-img:hover 
+{
+    background-color: #eee;
+    cursor: pointer;
+    opacity: 0.5;
+}   
+.passwordset 
+{
+    cursor: pointer;
+}
+.table-row-print
+{
+	border-bottom: 1px dotted #252525; 
+}
+.table-row-print td
+{
+	border:none !important;
+}
+.link-setting-header
+{
+	padding: 0px 10px 0px 10px;
+}
+.header_row a 
+{
+	color: #fff;
+}
+.navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover
+{
+	background-color: none;
+}
+.error
+{
+	color: #c00;
+}
+.invoice
+{
+	margin-top:20px; 
+}
+.set-input-width
+{
+	width: 100px;
+}
+.invoice-confirmation i
+{
+	font-size: 321px;
+	color: #b7b7b7;
+	margin-top: 60px;
+}
+.pos-invoice-btn
+{
+	margin-right: 14px;
+}
+.bank-section-details
+{
+	display: none;
+}
+.bank-cheque-no
+{
+	display: none;
+}
+.users-list > li img
+{
+	border-radius: 100%;
+}
+table td
+{
+	padding: 5px 5px !important;
+}
+.pos_box
+{
+	width: 55%;
+}
+.img-settings
+{
+	background-color: #fff;
+	border-radius:100px;
+}
+.company-icon {
+	background-color: #fff;
+	border-radius: 100px;
+	border: 1px solid #fff;
+}
+
+.company-profile-name {
+	font-size: 18px;
+	margin: 10px 0px;
+	text-align: right;
+}
+
+.profile-user-img {
+	width: 100%;
+	border-radius:5px;
+	height: auto;
+}
+
+.profile-bread-set {
+	margin-bottom: 20px;
+}
+
+.print-logo-size
+{
+	width: 150px;
+	height: auto;
+}
+.order-summary-box
+{
+	width: 200px;
+	float: left;
+	border-radius: 5px;
+}
+::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #f7f7ff;
+}
+
+::-webkit-scrollbar
+{
+	width: 6px;  
+}
+.header_row
+{
+
+}

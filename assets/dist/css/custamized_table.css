@@ -1,0 +1,39 @@
+
+.table_height_set td
+{
+   vertical-align: middle !important;
+   padding: 0px 5px !important;
+}
+.table_height_set 
+{
+    width: 100%;
+}
+.table_height_set thead, tbody, tr, td, th { display: block; }
+.table_height_set tr:after 
+{
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+.table_height_set thead th 
+{
+    height: 46px;
+
+    /*text-align: left;*/
+}
+.table_height_set tbody td, thead th 
+{
+    width: 20%;
+    float: left;
+    text-align: center;
+}
+.outline-cls
+{
+    border:none;
+    text-align: center;
+}
+.set-no-padding
+{
+    padding: 0px;
+}

@@ -1,0 +1,1604 @@
+SET foreign_key_checks = 0;
+#
+# TABLE STRUCTURE FOR: mp_banks
+#
+
+DROP TABLE IF EXISTS `mp_banks`;
+
+CREATE TABLE `mp_banks` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `bankname` varchar(255) NOT NULL,
+  `branch` varchar(100) NOT NULL,
+  `branchcode` varchar(100) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `accountno` varchar(100) NOT NULL,
+  `status` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_banks` (`id`, `bankname`, `branch`, `branchcode`, `title`, `accountno`, `status`) VALUES ('1', 'Soneri Bank Pvt Ltd', 'Suparco branch', '0051', 'MUHAMMAD IBRAHIM', '02051305322', '0');
+INSERT INTO `mp_banks` (`id`, `bankname`, `branch`, `branchcode`, `title`, `accountno`, `status`) VALUES ('2', 'Muslim Commercial Bank', 'Hill Park Branch', '0032', 'MUHAMMAD IBRAHIM', '020513302522', '0');
+
+
+#
+# TABLE STRUCTURE FOR: mp_bank_opening
+#
+
+DROP TABLE IF EXISTS `mp_bank_opening`;
+
+CREATE TABLE `mp_bank_opening` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date_created` date NOT NULL,
+  `bank_id` int(11) NOT NULL,
+  `amount` decimal(11,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `bank_id` (`bank_id`),
+  CONSTRAINT `bank_opening_transac` FOREIGN KEY (`bank_id`) REFERENCES `mp_banks` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+#
+# TABLE STRUCTURE FOR: mp_bank_transaction
+#
+
+DROP TABLE IF EXISTS `mp_bank_transaction`;
+
+CREATE TABLE `mp_bank_transaction` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `transaction_id` int(11) NOT NULL,
+  `bank_id` int(11) NOT NULL,
+  `payee_id` int(11) NOT NULL,
+  `method` varchar(50) NOT NULL,
+  `cheque_amount` decimal(11,2) NOT NULL,
+  `ref_no` varchar(100) NOT NULL,
+  `transaction_status` int(1) NOT NULL,
+  `transaction_type` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `transaction_id` (`transaction_id`),
+  KEY `bank_id` (`bank_id`),
+  KEY `payee_id` (`payee_id`),
+  CONSTRAINT `bankid_bank_fk` FOREIGN KEY (`bank_id`) REFERENCES `mp_banks` (`id`),
+  CONSTRAINT `payee_bank_fk` FOREIGN KEY (`payee_id`) REFERENCES `mp_payee` (`id`),
+  CONSTRAINT `transaction_general_fk` FOREIGN KEY (`transaction_id`) REFERENCES `mp_generalentry` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_bank_transaction` (`id`, `transaction_id`, `bank_id`, `payee_id`, `method`, `cheque_amount`, `ref_no`, `transaction_status`, `transaction_type`) VALUES ('1', '118', '1', '5', 'Cash', '4000.00', '', '0', 'recieved');
+INSERT INTO `mp_bank_transaction` (`id`, `transaction_id`, `bank_id`, `payee_id`, `method`, `cheque_amount`, `ref_no`, `transaction_status`, `transaction_type`) VALUES ('2', '119', '1', '5', 'Cheque', '100.00', 'FFRTT', '0', 'paid');
+INSERT INTO `mp_bank_transaction` (`id`, `transaction_id`, `bank_id`, `payee_id`, `method`, `cheque_amount`, `ref_no`, `transaction_status`, `transaction_type`) VALUES ('3', '120', '1', '5', 'Cheque', '150.00', 'GDFGDFG', '0', 'paid');
+INSERT INTO `mp_bank_transaction` (`id`, `transaction_id`, `bank_id`, `payee_id`, `method`, `cheque_amount`, `ref_no`, `transaction_status`, `transaction_type`) VALUES ('4', '121', '1', '3', 'Cheque', '100.00', 'DFD333', '0', 'paid');
+INSERT INTO `mp_bank_transaction` (`id`, `transaction_id`, `bank_id`, `payee_id`, `method`, `cheque_amount`, `ref_no`, `transaction_status`, `transaction_type`) VALUES ('5', '122', '1', '3', 'Cheque', '125.00', '5555', '0', 'recieved');
+
+
+#
+# TABLE STRUCTURE FOR: mp_barcode
+#
+
+DROP TABLE IF EXISTS `mp_barcode`;
+
+CREATE TABLE `mp_barcode` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `barcode` varchar(255) NOT NULL,
+  `random_no` varchar(255) NOT NULL,
+  `description` longtext NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+#
+# TABLE STRUCTURE FOR: mp_brand
+#
+
+DROP TABLE IF EXISTS `mp_brand`;
+
+CREATE TABLE `mp_brand` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_brand` (`id`, `name`) VALUES ('1', 'Nestle');
+INSERT INTO `mp_brand` (`id`, `name`) VALUES ('2', 'Tapal');
+INSERT INTO `mp_brand` (`id`, `name`) VALUES ('5', 'Pepsico');
+INSERT INTO `mp_brand` (`id`, `name`) VALUES ('6', '7up');
+INSERT INTO `mp_brand` (`id`, `name`) VALUES ('7', 'Unilever');
+
+
+#
+# TABLE STRUCTURE FOR: mp_brand_sector
+#
+
+DROP TABLE IF EXISTS `mp_brand_sector`;
+
+CREATE TABLE `mp_brand_sector` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sector` varchar(255) NOT NULL,
+  `created` date NOT NULL,
+  `updated` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_brand_sector` (`id`, `sector`, `created`, `updated`) VALUES ('1', 'Water', '2018-04-10', '2018-04-10');
+
+
+#
+# TABLE STRUCTURE FOR: mp_category
+#
+
+DROP TABLE IF EXISTS `mp_category`;
+
+CREATE TABLE `mp_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `register_date` date NOT NULL,
+  `status` int(1) NOT NULL,
+  `added_by` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`),
+  KEY `id_2` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_category` (`id`, `category_name`, `description`, `register_date`, `status`, `added_by`) VALUES ('1', 'Liquid', 'Here goes description', '2018-04-10', '0', 'Medix');
+INSERT INTO `mp_category` (`id`, `category_name`, `description`, `register_date`, `status`, `added_by`) VALUES ('2', 'Foods', 'Here goes description', '2018-04-15', '0', 'Pencil');
+INSERT INTO `mp_category` (`id`, `category_name`, `description`, `register_date`, `status`, `added_by`) VALUES ('3', 'Detergents', 'Here goes description', '2018-04-15', '0', 'Pencil');
+INSERT INTO `mp_category` (`id`, `category_name`, `description`, `register_date`, `status`, `added_by`) VALUES ('4', 'Soap', 'Here goes description', '2018-04-15', '0', 'Pencil');
+
+
+#
+# TABLE STRUCTURE FOR: mp_contactabout
+#
+
+DROP TABLE IF EXISTS `mp_contactabout`;
+
+CREATE TABLE `mp_contactabout` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `contact_title` varchar(255) NOT NULL,
+  `contact_description` varchar(255) NOT NULL,
+  `phone_number` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `facebook` varchar(255) NOT NULL,
+  `twitter` varchar(255) NOT NULL,
+  `linked` varchar(255) NOT NULL,
+  `googleplus` varchar(255) NOT NULL,
+  `about_title` varchar(255) NOT NULL,
+  `about_quotation` varchar(255) NOT NULL,
+  `about_name` varchar(255) NOT NULL,
+  `about_title2` varchar(255) NOT NULL,
+  `about_description` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_contactabout` (`id`, `contact_title`, `contact_description`, `phone_number`, `address`, `email`, `facebook`, `twitter`, `linked`, `googleplus`, `about_title`, `about_quotation`, `about_name`, `about_title2`, `about_description`) VALUES ('1', 'Contact Us', 'Lorum Ipsum dolar sit ami ', '+1 800 123 1234', '21th Street North way Commerical Market Mohenjo Daro', 'info@gbdevelopers.net', 'http://www.facebook.com/ali.i.roshan', 'ali.i.roshan', 'ali.i.roshan', 'ali.i.roshan', '« Lorem Ipsum is simply dummy text of the printing  »', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.p;#039;s standard dummy text ever since the 1500s, when an unknown printer took a ga', '— Medix Pharmacy', 'About Us', 'Praesent convallis tortor et enim laoreet, vel consectetur purus latoque penatibus et dis parturient.');
+
+
+#
+# TABLE STRUCTURE FOR: mp_customer_payments
+#
+
+DROP TABLE IF EXISTS `mp_customer_payments`;
+
+CREATE TABLE `mp_customer_payments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `transaction_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `amount` decimal(11,2) NOT NULL,
+  `method` varchar(255) NOT NULL,
+  `date` date NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `agentname` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `transaction_id` (`transaction_id`),
+  KEY `customer_id` (`customer_id`),
+  CONSTRAINT `customer_trans_fk` FOREIGN KEY (`transaction_id`) REFERENCES `mp_generalentry` (`id`),
+  CONSTRAINT `payee_id_fk` FOREIGN KEY (`customer_id`) REFERENCES `mp_payee` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_customer_payments` (`id`, `transaction_id`, `customer_id`, `amount`, `method`, `date`, `description`, `agentname`) VALUES ('1', '9', '4', '1200.00', 'Cash', '2018-04-16', 'descrition', 'Pencil');
+INSERT INTO `mp_customer_payments` (`id`, `transaction_id`, `customer_id`, `amount`, `method`, `date`, `description`, `agentname`) VALUES ('2', '21', '2', '1230.00', 'Cash', '2018-04-17', 'descrition', 'Pencil');
+INSERT INTO `mp_customer_payments` (`id`, `transaction_id`, `customer_id`, `amount`, `method`, `date`, `description`, `agentname`) VALUES ('3', '89', '4', '253.00', 'Cash', '2018-04-18', 'descrition', 'Pencil');
+INSERT INTO `mp_customer_payments` (`id`, `transaction_id`, `customer_id`, `amount`, `method`, `date`, `description`, `agentname`) VALUES ('4', '90', '4', '120.00', 'Cheque', '2018-04-18', 'descrition', 'Pencil');
+INSERT INTO `mp_customer_payments` (`id`, `transaction_id`, `customer_id`, `amount`, `method`, `date`, `description`, `agentname`) VALUES ('5', '91', '4', '145.00', 'Cheque', '2018-04-18', 'descrition', 'Pencil');
+
+
+#
+# TABLE STRUCTURE FOR: mp_drivers
+#
+
+DROP TABLE IF EXISTS `mp_drivers`;
+
+CREATE TABLE `mp_drivers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `contact` varchar(15) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `lisence` varchar(255) NOT NULL,
+  `ref` varchar(255) NOT NULL,
+  `date` date NOT NULL,
+  `cus_picture` varchar(255) NOT NULL,
+  `status` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_drivers` (`id`, `name`, `contact`, `address`, `lisence`, `ref`, `date`, `cus_picture`, `status`) VALUES ('1', 'Zarwali Bhai', '3472394224', 'Gulistan-e-Jauher Block 4A HOUSE NO 570', '4220118987557', 'Medix', '2018-04-10', '2771e7b39a916cf3d45fc865f9c04c4b.jpg', '0');
+
+
+#
+# TABLE STRUCTURE FOR: mp_expense
+#
+
+DROP TABLE IF EXISTS `mp_expense`;
+
+CREATE TABLE `mp_expense` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `transaction_id` int(11) NOT NULL,
+  `head_id` int(11) NOT NULL,
+  `total_bill` decimal(11,2) NOT NULL,
+  `total_paid` decimal(11,2) NOT NULL,
+  `date` date NOT NULL,
+  `user` varchar(255) NOT NULL,
+  `method` varchar(50) NOT NULL,
+  `description` longtext NOT NULL,
+  `payee_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `head_id` (`head_id`),
+  KEY `transaction_id` (`transaction_id`),
+  KEY `payee_id` (`payee_id`),
+  CONSTRAINT `general_expense_fk` FOREIGN KEY (`transaction_id`) REFERENCES `mp_generalentry` (`id`),
+  CONSTRAINT `head_expense_fk` FOREIGN KEY (`head_id`) REFERENCES `mp_head` (`id`),
+  CONSTRAINT `payee_expense_fk` FOREIGN KEY (`payee_id`) REFERENCES `mp_payee` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_expense` (`id`, `transaction_id`, `head_id`, `total_bill`, `total_paid`, `date`, `user`, `method`, `description`, `payee_id`) VALUES ('6', '55', '15', '12.00', '12.00', '2018-04-17', 'Pencil', 'Cash', 'Now that we know who you are, I know who I am. I’m not a mistake! It all makes sense! In a comic.', '3');
+INSERT INTO `mp_expense` (`id`, `transaction_id`, `head_id`, `total_bill`, `total_paid`, `date`, `user`, `method`, `description`, `payee_id`) VALUES ('7', '56', '15', '5.00', '5.00', '2018-04-17', 'Pencil', 'Cheque', 'descrition', '3');
+INSERT INTO `mp_expense` (`id`, `transaction_id`, `head_id`, `total_bill`, `total_paid`, `date`, `user`, `method`, `description`, `payee_id`) VALUES ('8', '57', '15', '7.00', '7.00', '2018-04-17', 'Pencil', 'Cheque', 'Now that we know who you are, I know who I am. I’m not a mistake! It all makes sense! In a comic.', '3');
+INSERT INTO `mp_expense` (`id`, `transaction_id`, `head_id`, `total_bill`, `total_paid`, `date`, `user`, `method`, `description`, `payee_id`) VALUES ('9', '58', '15', '10.00', '9.00', '2018-04-17', 'Pencil', 'Cheque', 'Now that we know who you are, I know who I am. I’m not a mistake! It all makes sense! In a comic.', '3');
+INSERT INTO `mp_expense` (`id`, `transaction_id`, `head_id`, `total_bill`, `total_paid`, `date`, `user`, `method`, `description`, `payee_id`) VALUES ('11', '62', '13', '15.00', '15.00', '2018-04-17', 'Pencil', 'Cheque', 'Now that we know who you are, I know who I am. I’m not a mistake! It all makes sense! In a comic.', '3');
+INSERT INTO `mp_expense` (`id`, `transaction_id`, `head_id`, `total_bill`, `total_paid`, `date`, `user`, `method`, `description`, `payee_id`) VALUES ('12', '64', '15', '19.65', '15.89', '2018-04-18', 'Pencil', 'Cheque', 'descrition', '4');
+INSERT INTO `mp_expense` (`id`, `transaction_id`, `head_id`, `total_bill`, `total_paid`, `date`, `user`, `method`, `description`, `payee_id`) VALUES ('13', '68', '14', '5.50', '5.50', '2018-04-18', 'Pencil', 'Cash', 'Now that we know who you are, I know who I am. I’m not a mistake! It all makes sense! In a comic.', '4');
+INSERT INTO `mp_expense` (`id`, `transaction_id`, `head_id`, `total_bill`, `total_paid`, `date`, `user`, `method`, `description`, `payee_id`) VALUES ('16', '71', '14', '2.30', '2.30', '2018-04-18', 'Pencil', 'Cash', 'Now that we know who you are, I know who I am. I’m not a mistake! It all makes sense! In a comic.', '2');
+INSERT INTO `mp_expense` (`id`, `transaction_id`, `head_id`, `total_bill`, `total_paid`, `date`, `user`, `method`, `description`, `payee_id`) VALUES ('17', '72', '14', '2.50', '2.40', '2018-04-18', 'Pencil', 'Cheque', 'Now that we know who you are, I know who I am. I’m not a mistake! It all makes sense! In a comic.', '4');
+
+
+#
+# TABLE STRUCTURE FOR: mp_generalentry
+#
+
+DROP TABLE IF EXISTS `mp_generalentry`;
+
+CREATE TABLE `mp_generalentry` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  `naration` varchar(255) NOT NULL,
+  `generated_source` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=141 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('1', '2018-04-16', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('2', '2018-04-16', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('3', '2018-04-16', 'Transaction occured from POS', 'return_pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('4', '2018-04-16', 'Transaction occured from POS', 'return_pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('5', '2018-04-16', 'Transaction occured from POS', 'return_pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('6', '2018-04-16', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('7', '2018-04-16', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('8', '2018-04-16', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('9', '2018-04-16', 'Transaction occured from customer payments', 'customer_payment');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('10', '2018-04-16', 'Transaction occured from create purchases', 'create_purchases');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('11', '2018-04-16', 'Transaction occured from purchases return', 'purchases_return');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('12', '2018-04-16', 'Transaction occured from create purchases', 'create_purchases');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('13', '2018-04-16', 'Transaction occured from Supplier payments', 'supplier_payment');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('14', '2018-04-16', 'Transaction occured from expense', 'expense');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('15', '2018-04-16', 'Transaction occured from expense', 'expense');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('17', '2018-04-17', 'Here does memo', 'deposit');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('18', '2018-04-17', 'Now that we know who you are, I know who I am. I’m not a mistake! It all makes sense! In a comic.', 'Journal Voucher');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('19', '2018-04-17', 'descrition', 'Opening balance');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('20', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('21', '2018-04-17', 'Transaction occured from customer payments', 'customer_payment');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('22', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('23', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('24', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('25', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('26', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('27', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('28', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('29', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('30', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('31', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('32', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('33', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('34', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('35', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('36', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('37', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('38', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('39', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('40', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('41', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('42', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('43', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('44', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('45', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('46', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('47', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('48', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('49', '2018-04-17', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('50', '2018-04-17', 'Transaction occured from create purchases', 'create_purchases');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('54', '2018-04-17', 'Transaction occured from expense', 'expense');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('55', '2018-04-17', 'Transaction occured from expense', 'expense');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('56', '2018-04-17', 'Transaction occured from expense', 'expense');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('57', '2018-04-17', 'Transaction occured from expense', 'expense');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('58', '2018-04-17', 'Transaction occured from expense', 'expense');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('59', '2018-04-17', 'descrition', 'cheque');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('60', '2018-04-17', 'Transaction occured from create purchases', 'create_purchases');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('62', '2018-04-17', 'Transaction occured from expense', 'expense');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('63', '2018-04-17', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('64', '2018-04-18', 'Transaction occured from expense', 'expense');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('65', '2018-04-18', 'Here does memo', 'deposit');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('66', '2018-04-18', 'Here does memo', 'deposit');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('67', '2018-04-18', 'Now that we know who you are, I know who I am. I’m not a mistake! It all makes sense! In a comic.', 'cheque');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('68', '2018-04-18', 'Transaction occured from expense', 'expense');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('71', '2018-04-18', 'Transaction occured from expense', 'expense');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('72', '2018-04-18', 'Transaction occured from expense', 'expense');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('75', '2018-04-18', 'Transaction occured from create purchases', 'create_purchases');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('77', '2018-04-18', 'Transaction occured from create purchases', 'create_purchases');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('78', '2018-04-18', 'Transaction occured from purchases return', 'purchases_return');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('79', '2018-04-18', 'Transaction occured from purchases return', 'purchases_return');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('80', '2018-04-18', 'Transaction occured from create purchases', 'create_purchases');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('83', '2018-04-18', 'Transaction occured from Supplier payments', 'supplier_payment');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('84', '2018-04-18', 'Transaction occured from Supplier payments', 'supplier_payment');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('86', '2018-04-18', 'Transaction occured from Supplier payments', 'supplier_payment');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('87', '2018-04-18', 'Transaction occured from Supplier payments', 'supplier_payment');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('88', '2018-04-18', 'Transaction occured from Supplier payments', 'supplier_payment');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('89', '2018-04-18', 'Transaction occured from customer payments', 'customer_payment');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('90', '2018-04-18', 'Transaction occured from customer payments', 'customer_payment');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('91', '2018-04-18', 'Transaction occured from customer payments', 'customer_payment');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('92', '2018-04-18', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('93', '2018-04-18', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('94', '2018-04-18', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('95', '2018-04-18', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('96', '2018-04-18', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('97', '2018-04-18', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('98', '2018-04-18', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('99', '2018-04-19', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('100', '2018-04-19', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('101', '2018-04-19', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('102', '2018-04-19', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('103', '2018-04-19', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('104', '2018-04-19', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('105', '2018-04-19', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('106', '2018-04-19', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('108', '2018-04-19', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('109', '2018-04-19', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('110', '2018-04-19', 'Here does memo', 'deposit');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('111', '2018-04-19', 'Here does memo', 'deposit');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('112', '2018-04-19', 'dfsdfsd', 'cheque');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('113', '2018-04-19', 'dfdfdf', 'cheque');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('114', '2018-04-19', 'descrition', 'cheque');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('115', '2018-04-19', 'cxvxcv', 'deposit');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('116', '2018-04-19', 'Transaction occured from supply POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('117', '2018-04-19', 'descrition', 'cheque');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('118', '2018-04-19', '', 'deposit');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('119', '2018-04-19', 'descrition', 'cheque');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('120', '2018-04-19', 'GDFGFDG', 'cheque');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('121', '2018-04-19', 'descrition', 'cheque');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('122', '2018-04-19', 'Transaction occured from purchases return', 'purchases_return');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('123', '2018-04-20', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('124', '2018-04-20', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('125', '2018-04-20', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('126', '2018-04-20', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('127', '2018-04-20', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('128', '2018-04-20', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('129', '2018-04-20', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('130', '2018-04-20', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('131', '2018-04-20', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('132', '2018-04-20', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('133', '2018-04-20', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('134', '2018-04-20', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('135', '2018-04-20', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('136', '2018-04-20', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('137', '2018-04-20', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('138', '2018-04-20', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('139', '2018-05-08', 'Transaction occured from POS', 'pos');
+INSERT INTO `mp_generalentry` (`id`, `date`, `naration`, `generated_source`) VALUES ('140', '2018-05-08', 'Transaction occured from POS', 'pos');
+
+
+#
+# TABLE STRUCTURE FOR: mp_head
+#
+
+DROP TABLE IF EXISTS `mp_head`;
+
+CREATE TABLE `mp_head` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `nature` varchar(50) NOT NULL,
+  `type` varchar(50) NOT NULL,
+  `relation_id` int(11) NOT NULL,
+  `expense_type` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_head` (`id`, `name`, `nature`, `type`, `relation_id`, `expense_type`) VALUES ('1', 'Salary', 'Expense', 'Current', '0', 'Cash Expense');
+INSERT INTO `mp_head` (`id`, `name`, `nature`, `type`, `relation_id`, `expense_type`) VALUES ('2', 'Cash', 'Assets', 'Non-Current', '0', 'Non-Cash Expense');
+INSERT INTO `mp_head` (`id`, `name`, `nature`, `type`, `relation_id`, `expense_type`) VALUES ('3', 'Inventory', 'Revenue', 'Current', '0', 'Cash Expense');
+INSERT INTO `mp_head` (`id`, `name`, `nature`, `type`, `relation_id`, `expense_type`) VALUES ('4', 'Accounts receivable', 'Assets', 'Current', '0', '-');
+INSERT INTO `mp_head` (`id`, `name`, `nature`, `type`, `relation_id`, `expense_type`) VALUES ('5', 'Accounts payable', 'Libility', 'Current', '0', 'Cash Expense');
+INSERT INTO `mp_head` (`id`, `name`, `nature`, `type`, `relation_id`, `expense_type`) VALUES ('6', 'Telephone Expense', 'Expense', 'Current', '0', '-');
+INSERT INTO `mp_head` (`id`, `name`, `nature`, `type`, `relation_id`, `expense_type`) VALUES ('7', 'CapitalStock', 'Equity', 'Current', '0', '-');
+INSERT INTO `mp_head` (`id`, `name`, `nature`, `type`, `relation_id`, `expense_type`) VALUES ('8', 'Land', 'Assets', 'Non-Current', '0', '-');
+INSERT INTO `mp_head` (`id`, `name`, `nature`, `type`, `relation_id`, `expense_type`) VALUES ('9', 'Building', 'Assets', 'Non-Current', '0', '-');
+INSERT INTO `mp_head` (`id`, `name`, `nature`, `type`, `relation_id`, `expense_type`) VALUES ('10', 'Notes payable', 'Libility', 'Non-Current', '0', '-');
+INSERT INTO `mp_head` (`id`, `name`, `nature`, `type`, `relation_id`, `expense_type`) VALUES ('11', 'Tools and Equipments', 'Assets', 'Current', '0', '-');
+INSERT INTO `mp_head` (`id`, `name`, `nature`, `type`, `relation_id`, `expense_type`) VALUES ('12', 'Repair Service Revenue', 'Revenue', 'Current', '0', '-');
+INSERT INTO `mp_head` (`id`, `name`, `nature`, `type`, `relation_id`, `expense_type`) VALUES ('13', 'Wages Expense', 'Expense', 'Current', '0', '-');
+INSERT INTO `mp_head` (`id`, `name`, `nature`, `type`, `relation_id`, `expense_type`) VALUES ('14', 'Utitlity Expense', 'Expense', 'Current', '0', 'Cash Expense');
+INSERT INTO `mp_head` (`id`, `name`, `nature`, `type`, `relation_id`, `expense_type`) VALUES ('15', 'Adverstising Expense', 'Expense', 'Current', '0', '-');
+INSERT INTO `mp_head` (`id`, `name`, `nature`, `type`, `relation_id`, `expense_type`) VALUES ('16', 'Cash in bank', 'Assets', 'Current', '0', '-');
+
+
+#
+# TABLE STRUCTURE FOR: mp_invoices
+#
+
+DROP TABLE IF EXISTS `mp_invoices`;
+
+CREATE TABLE `mp_invoices` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `transaction_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `discount` decimal(11,2) NOT NULL,
+  `status` int(1) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `agentname` varchar(100) NOT NULL,
+  `cus_id` int(11) NOT NULL,
+  `cus_picture` varchar(255) NOT NULL,
+  `delivered_to` varchar(100) NOT NULL,
+  `delivered_by` varchar(100) NOT NULL,
+  `delivered_date` date NOT NULL,
+  `delivered_description` varchar(255) NOT NULL,
+  `shippingcharges` decimal(11,2) NOT NULL,
+  `prescription_id` int(11) NOT NULL,
+  `region_id` int(11) NOT NULL,
+  `vehicle_id` int(11) NOT NULL,
+  `driver_id` int(11) NOT NULL,
+  `payment_method` int(1) NOT NULL,
+  `total_bill` decimal(11,2) NOT NULL,
+  `bill_paid` decimal(11,2) NOT NULL,
+  `source` int(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`),
+  KEY `cus_id` (`cus_id`),
+  KEY `prescription_id` (`prescription_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('1', '1', '2018-04-16', '0.00', '0', '', 'Pencil', '4', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '1500.00', '1500.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('2', '2', '2018-04-16', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '55.00', '55.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('3', '6', '2018-04-16', '0.00', '0', '', 'Pencil', '4', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '1500.00', '0.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('4', '7', '2018-04-16', '5.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '25.00', '25.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('5', '8', '2018-04-16', '5.00', '0', '', 'Pencil', '4', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '25.00', '25.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('6', '20', '2018-04-17', '0.00', '1', 'description', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('7', '22', '2018-04-17', '0.00', '1', 'gfgfgfg', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('8', '23', '2018-04-17', '0.00', '1', 'des', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('9', '24', '2018-04-17', '0.00', '1', 'descrip', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('10', '25', '2018-04-17', '0.00', '1', 'ders', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('11', '26', '2018-04-17', '0.00', '1', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('12', '27', '2018-04-17', '0.00', '1', 'fgfdgdfg', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('13', '28', '2018-04-17', '0.00', '0', 'fgdfgdfg', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '1.00', '1260.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('14', '29', '2018-04-17', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '420.00', '420.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('15', '30', '2018-04-17', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '420.00', '420.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('16', '31', '2018-04-17', '0.00', '0', 'sfsdfsdf', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '780.00', '780.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('17', '32', '2018-04-17', '0.00', '1', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('18', '33', '2018-04-17', '0.00', '1', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('19', '34', '2018-04-17', '0.00', '1', 'des', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('20', '35', '2018-04-17', '0.00', '1', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('21', '36', '2018-04-17', '0.00', '1', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('22', '37', '2018-04-17', '0.00', '1', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('23', '38', '2018-04-17', '0.00', '1', 'gdfgdfgdfg', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('24', '39', '2018-04-17', '0.00', '1', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('25', '40', '2018-04-17', '0.00', '1', 'ghjghjghj', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('26', '41', '2018-04-17', '0.00', '1', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('27', '42', '2018-04-17', '0.00', '1', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('28', '43', '2018-04-17', '0.00', '1', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('29', '44', '2018-04-17', '0.00', '1', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('30', '45', '2018-04-17', '0.00', '1', 'des', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('31', '46', '2018-04-17', '0.00', '1', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('32', '47', '2018-04-17', '0.00', '1', 'jghjghj', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('33', '48', '2018-04-17', '0.00', '1', 'kjhkhjkhjk', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('34', '49', '2018-04-17', '0.00', '1', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '1500.00', '1500.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('35', '63', '2018-04-17', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '30.00', '30.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('36', '92', '2018-04-18', '10.00', '0', 'descirdfdsfsdf', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '350.00', '350.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('37', '93', '2018-04-18', '0.00', '0', 'dfdfdf', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '360.00', '360.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('38', '94', '2018-04-18', '0.00', '0', '', 'Pencil', '4', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '720.00', '720.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('39', '95', '2018-04-18', '10.00', '0', 'fgdfgdfg', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '350.00', '350.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('40', '96', '2018-04-18', '0.00', '0', 'FGDFGDF', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '1', '360.00', '360.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('41', '97', '2018-04-18', '0.00', '0', 'dfsdfsd', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '1', '360.00', '360.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('42', '98', '2018-04-18', '0.00', '0', 'sdfsdf', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '1', '360.00', '360.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('43', '99', '2018-04-19', '0.00', '0', 'sdsds', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '360.00', '360.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('44', '100', '2018-04-19', '0.00', '0', 'DSDSD', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '1', '360.00', '360.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('45', '101', '2018-04-19', '0.00', '1', 'VXVVXCV', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '1', '0.00', '0.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('46', '102', '2018-04-19', '200.00', '0', 'dsfsdfsdf', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '1', '1420.00', '1420.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('47', '103', '2018-04-19', '60.00', '0', 'fsfsdfdsf', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '300.00', '300.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('48', '104', '2018-04-19', '60.00', '0', 'hghghgh', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '300.00', '300.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('49', '105', '2018-04-19', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '360.00', '360.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('50', '106', '2018-04-19', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '0', '360.00', '360.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('52', '108', '2018-04-19', '0.00', '0', 'sdfsdfsdf', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '1', '1500.00', '1500.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('53', '109', '2018-04-19', '0.00', '0', 'fhfghfgh', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '1', '2160.00', '2160.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('54', '116', '2018-04-19', '0.00', '0', 'asdasdasd', 'Pencil', '4', '', '', '', '0000-00-00', '', '0.00', '0', '1', '2', '1', '1', '360.00', '360.00', '1');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('55', '123', '2018-04-20', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '30.00', '30.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('56', '124', '2018-04-20', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '30.00', '30.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('57', '125', '2018-04-20', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '30.00', '30.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('58', '126', '2018-04-20', '0.00', '1', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '30.00', '30.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('59', '127', '2018-04-20', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '30.00', '30.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('60', '128', '2018-04-20', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '30.00', '30.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('61', '129', '2018-04-20', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '30.00', '30.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('62', '130', '2018-04-20', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '30.00', '30.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('63', '131', '2018-04-20', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '30.00', '30.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('64', '132', '2018-04-20', '10.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '50.00', '50.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('65', '133', '2018-04-20', '0.00', '0', '', 'Pencil', '4', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '60.00', '60.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('66', '134', '2018-04-20', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '60.00', '60.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('67', '135', '2018-04-20', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '30.00', '30.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('68', '136', '2018-04-20', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '30.00', '30.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('69', '137', '2018-04-20', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '30.00', '30.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('70', '138', '2018-04-20', '0.00', '0', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '30.00', '30.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('71', '139', '2018-05-08', '0.00', '1', 'Customer returned item after few days', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '0.00', '0.00', '0');
+INSERT INTO `mp_invoices` (`id`, `transaction_id`, `date`, `discount`, `status`, `description`, `agentname`, `cus_id`, `cus_picture`, `delivered_to`, `delivered_by`, `delivered_date`, `delivered_description`, `shippingcharges`, `prescription_id`, `region_id`, `vehicle_id`, `driver_id`, `payment_method`, `total_bill`, `bill_paid`, `source`) VALUES ('72', '140', '2018-05-08', '0.00', '1', '', 'Pencil', '2', '', '', '', '0000-00-00', '', '0.00', '0', '0', '0', '0', '0', '0.00', '0.00', '0');
+
+
+#
+# TABLE STRUCTURE FOR: mp_langingpage
+#
+
+DROP TABLE IF EXISTS `mp_langingpage`;
+
+CREATE TABLE `mp_langingpage` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `companyname` varchar(255) NOT NULL,
+  `companydescription` varchar(255) NOT NULL,
+  `companykeywords` varchar(255) NOT NULL,
+  `logo` varchar(255) NOT NULL,
+  `banner` varchar(255) NOT NULL,
+  `slider1` varchar(255) NOT NULL,
+  `slider2` varchar(255) NOT NULL,
+  `slider3` varchar(255) NOT NULL,
+  `slider4` varchar(255) NOT NULL,
+  `slider5` varchar(255) NOT NULL,
+  `title1` varchar(255) NOT NULL,
+  `title2` varchar(255) NOT NULL,
+  `title3` varchar(255) NOT NULL,
+  `title4` varchar(255) NOT NULL,
+  `title5` varchar(255) NOT NULL,
+  `title6` varchar(255) NOT NULL,
+  `subtitle6` varchar(255) NOT NULL,
+  `subtitle6one` varchar(255) NOT NULL,
+  `title8` varchar(255) NOT NULL,
+  `title9` varchar(255) NOT NULL,
+  `title10` varchar(255) NOT NULL,
+  `currency` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `language` varchar(50) NOT NULL,
+  `primarycolor` varchar(50) NOT NULL,
+  `theme_pri_hover` varchar(50) NOT NULL,
+  `expirey` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_langingpage` (`id`, `companyname`, `companydescription`, `companykeywords`, `logo`, `banner`, `slider1`, `slider2`, `slider3`, `slider4`, `slider5`, `title1`, `title2`, `title3`, `title4`, `title5`, `title6`, `subtitle6`, `subtitle6one`, `title8`, `title9`, `title10`, `currency`, `language`, `primarycolor`, `theme_pri_hover`, `expirey`) VALUES ('1', 'Awami Supper Store', 'Awami Supper Store', 'Awami Supper Store', 'dcb99169fed78154951d15df01aa5dbe.png', '1171127a5133603e62cc949a87aedda4.jpg', '0ae082ea4c6d3334de39a11840c07c09.jpg', 'a3cbfa5f37d75bd8de678ceded28da43.png', 'd6e2b9bad5eb6560699d95d0235b3e9e.png', '67e008061660613ba4497979db422f91.png', 'ec572d4564b40dec3412b2d305f6a59e.png', 'THE  PHARMACY AND POS SYSTEM', 'OUR SERVICES', 'THINGS YOU SHOULD KNOW ABOUT US', 'MEET OUR PHARMACIST!.', 'SEE WHAT PATIENTS ARE SAYING?.', 'CONTACT US.', 'Contact Info.', 'Having Any Query! Or Book an appointment.', 'Quick Links.', 'Follow us.', '© Copyright Shop developed by North Soft. All Rights Reserved.', 'PKR', 'EN', '#4a6984', '#1f5788', '5');
+
+
+#
+# TABLE STRUCTURE FOR: mp_productslist
+#
+
+DROP TABLE IF EXISTS `mp_productslist`;
+
+CREATE TABLE `mp_productslist` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_id` int(11) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `mg` varchar(50) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `purchase` decimal(11,2) NOT NULL,
+  `retail` decimal(11,2) NOT NULL,
+  `expire` date NOT NULL,
+  `manufacturing` date NOT NULL,
+  `sideeffects` varchar(100) NOT NULL,
+  `description` varchar(100) NOT NULL,
+  `barcode` varchar(255) NOT NULL,
+  `min_stock` int(11) NOT NULL,
+  `status` int(1) NOT NULL,
+  `total_units` int(11) NOT NULL,
+  `packsize` varchar(255) NOT NULL,
+  `sku` varchar(255) NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `tax` decimal(11,2) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `brand_id` int(11) NOT NULL,
+  `brand_sector_id` int(11) NOT NULL,
+  `unit_type` varchar(50) NOT NULL,
+  `net_weight` varchar(50) NOT NULL,
+  `whole_sale` decimal(11,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `category_id` (`category_id`),
+  KEY `brand_id` (`brand_id`),
+  KEY `brand_sector_id` (`brand_sector_id`),
+  KEY `unit_type` (`unit_type`),
+  CONSTRAINT `brand_product_fk` FOREIGN KEY (`brand_id`) REFERENCES `mp_brand` (`id`),
+  CONSTRAINT `brand_sector_product_fk` FOREIGN KEY (`brand_sector_id`) REFERENCES `mp_brand_sector` (`id`),
+  CONSTRAINT `category_product_fk` FOREIGN KEY (`category_id`) REFERENCES `mp_category` (`id`),
+  CONSTRAINT `unit_product_fk` FOREIGN KEY (`unit_type`) REFERENCES `mp_units` (`symbol`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_productslist` (`id`, `category_id`, `product_name`, `mg`, `quantity`, `purchase`, `retail`, `expire`, `manufacturing`, `sideeffects`, `description`, `barcode`, `min_stock`, `status`, `total_units`, `packsize`, `sku`, `location`, `tax`, `type`, `image`, `brand_id`, `brand_sector_id`, `unit_type`, `net_weight`, `whole_sale`) VALUES ('1', '1', 'Aquafina', '800', '294', '25.00', '30.00', '0000-00-00', '0000-00-00', 'No Effects', 'here', '', '20', '0', '0', '12', 'XL-240', 'Ware house', '0.00', 'Finished Products', '', '1', '1', 'ltr', '800', '340.00');
+INSERT INTO `mp_productslist` (`id`, `category_id`, `product_name`, `mg`, `quantity`, `purchase`, `retail`, `expire`, `manufacturing`, `sideeffects`, `description`, `barcode`, `min_stock`, `status`, `total_units`, `packsize`, `sku`, `location`, `tax`, `type`, `image`, `brand_id`, `brand_sector_id`, `unit_type`, `net_weight`, `whole_sale`) VALUES ('2', '1', 'Milk Pack', '250', '397', '25.00', '30.00', '0000-00-00', '0000-00-00', 'No Effects', 'fsdfsdfsdf', '4587233658', '20', '0', '10', '24', 'XL-240', 'Ware house', '0.00', 'Finished Products', '', '1', '1', 'ltr', '8000', '720.00');
+INSERT INTO `mp_productslist` (`id`, `category_id`, `product_name`, `mg`, `quantity`, `purchase`, `retail`, `expire`, `manufacturing`, `sideeffects`, `description`, `barcode`, `min_stock`, `status`, `total_units`, `packsize`, `sku`, `location`, `tax`, `type`, `image`, `brand_id`, `brand_sector_id`, `unit_type`, `net_weight`, `whole_sale`) VALUES ('3', '1', 'Pepsi', '250', '12', '25.00', '35.00', '0000-00-00', '0000-00-00', 'No Effects', 'here', '', '20', '0', '3', '12', 'XL-250', 'Ware house', '0.00', 'Finished Products', '', '1', '1', 'ltr', '800', '420.00');
+INSERT INTO `mp_productslist` (`id`, `category_id`, `product_name`, `mg`, `quantity`, `purchase`, `retail`, `expire`, `manufacturing`, `sideeffects`, `description`, `barcode`, `min_stock`, `status`, `total_units`, `packsize`, `sku`, `location`, `tax`, `type`, `image`, `brand_id`, `brand_sector_id`, `unit_type`, `net_weight`, `whole_sale`) VALUES ('4', '1', 'Sprite', '250', '24', '30.00', '35.00', '0000-00-00', '0000-00-00', 'No Effects', 'here', '', '20', '0', '3', '12', 'XL-250', 'Ware house', '0.00', 'Finished Products', '', '6', '1', 'ltr', '800', '420.00');
+INSERT INTO `mp_productslist` (`id`, `category_id`, `product_name`, `mg`, `quantity`, `purchase`, `retail`, `expire`, `manufacturing`, `sideeffects`, `description`, `barcode`, `min_stock`, `status`, `total_units`, `packsize`, `sku`, `location`, `tax`, `type`, `image`, `brand_id`, `brand_sector_id`, `unit_type`, `net_weight`, `whole_sale`) VALUES ('5', '1', '7up', '250', '36', '30.00', '35.00', '0000-00-00', '0000-00-00', 'No Effects', 'here', '', '20', '0', '3', '12', 'XL-250', 'Ware house', '0.00', 'Finished Products', '', '6', '1', 'ltr', '800', '420.00');
+INSERT INTO `mp_productslist` (`id`, `category_id`, `product_name`, `mg`, `quantity`, `purchase`, `retail`, `expire`, `manufacturing`, `sideeffects`, `description`, `barcode`, `min_stock`, `status`, `total_units`, `packsize`, `sku`, `location`, `tax`, `type`, `image`, `brand_id`, `brand_sector_id`, `unit_type`, `net_weight`, `whole_sale`) VALUES ('6', '3', 'Serf Excel', '250', '12', '70.00', '85.00', '0000-00-00', '0000-00-00', 'No Effects', 'here', '', '20', '0', '3', '12', 'XL-250', 'Ware house', '0.00', 'Finished Products', '', '7', '1', 'ltr', '800', '420.00');
+INSERT INTO `mp_productslist` (`id`, `category_id`, `product_name`, `mg`, `quantity`, `purchase`, `retail`, `expire`, `manufacturing`, `sideeffects`, `description`, `barcode`, `min_stock`, `status`, `total_units`, `packsize`, `sku`, `location`, `tax`, `type`, `image`, `brand_id`, `brand_sector_id`, `unit_type`, `net_weight`, `whole_sale`) VALUES ('7', '3', 'Arial', '250', '7', '40.00', '60.00', '0000-00-00', '0000-00-00', 'No Effects', 'here', '', '20', '0', '3', '12', 'XL-250', 'Ware house', '0.00', 'Finished Products', '', '7', '1', 'ltr', '800', '420.00');
+INSERT INTO `mp_productslist` (`id`, `category_id`, `product_name`, `mg`, `quantity`, `purchase`, `retail`, `expire`, `manufacturing`, `sideeffects`, `description`, `barcode`, `min_stock`, `status`, `total_units`, `packsize`, `sku`, `location`, `tax`, `type`, `image`, `brand_id`, `brand_sector_id`, `unit_type`, `net_weight`, `whole_sale`) VALUES ('8', '3', 'Bonus', '250', '10', '25.00', '30.00', '0000-00-00', '0000-00-00', 'No Effects', 'here', '', '20', '0', '3', '12', 'XL-250', 'Ware house', '0.00', 'Finished Products', '', '7', '1', 'ltr', '800', '420.00');
+INSERT INTO `mp_productslist` (`id`, `category_id`, `product_name`, `mg`, `quantity`, `purchase`, `retail`, `expire`, `manufacturing`, `sideeffects`, `description`, `barcode`, `min_stock`, `status`, `total_units`, `packsize`, `sku`, `location`, `tax`, `type`, `image`, `brand_id`, `brand_sector_id`, `unit_type`, `net_weight`, `whole_sale`) VALUES ('9', '4', 'Lux', '250', '12', '35.00', '48.00', '0000-00-00', '0000-00-00', 'No Effects', 'here', '', '20', '0', '3', '12', 'XL-250', 'Ware house', '0.00', 'Finished Products', '', '7', '1', 'ltr', '800', '420.00');
+INSERT INTO `mp_productslist` (`id`, `category_id`, `product_name`, `mg`, `quantity`, `purchase`, `retail`, `expire`, `manufacturing`, `sideeffects`, `description`, `barcode`, `min_stock`, `status`, `total_units`, `packsize`, `sku`, `location`, `tax`, `type`, `image`, `brand_id`, `brand_sector_id`, `unit_type`, `net_weight`, `whole_sale`) VALUES ('10', '4', 'Safegaurd', '250', '12', '45.00', '55.00', '0000-00-00', '0000-00-00', 'No Effects', 'here', '', '20', '0', '3', '12', 'XL-250', 'Ware house', '0.00', 'Finished Products', '', '7', '1', 'ltr', '800', '420.00');
+
+
+#
+# TABLE STRUCTURE FOR: mp_menu
+#
+
+DROP TABLE IF EXISTS `mp_menu`;
+
+CREATE TABLE `mp_menu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `icon` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('1', 'Products', 'fa fa-life-ring');
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('2', 'Settings', 'fa fa-cog');
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('5', 'Reports', 'fa fa-balance-scale');
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('6', 'POS', 'fa fa-clipboard');
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('7', 'Profile', 'fa fa-user');
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('12', 'Roles', 'fa fa-users');
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('16', 'Supplier', 'fa fa-truck');
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('18', 'Bank', 'fa fa-bank');
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('20', 'Purchase', 'fa fa-briefcase');
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('21', 'Supply ', 'fa fa-flask');
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('22', 'Initilization', 'fa fa-anchor');
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('23', 'Accounts', 'fa fa-calculator');
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('24', 'Statements', 'fa fa-line-chart');
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('25', 'Options', 'fa fa-shopping-bag');
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('26', 'Dashboard', 'fa fa-dashboard');
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('27', 'Expense', 'fa fa-paper-plane');
+INSERT INTO `mp_menu` (`id`, `name`, `icon`) VALUES ('28', 'Customers', 'fa fa-user');
+
+
+#
+# TABLE STRUCTURE FOR: mp_menulist
+#
+
+DROP TABLE IF EXISTS `mp_menulist`;
+
+CREATE TABLE `mp_menulist` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `menu_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `link` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `menu_id` (`menu_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('1', '1', 'Products', 'product');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('2', '1', 'Categories', 'category');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('3', '2', 'Layout & System', 'layout');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('9', '28', 'Customers', 'customers');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('10', '5', 'Sales Report', 'sales_report');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('13', '6', 'View Invoice', 'invoice/manage');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('16', '7', 'Personal', 'profile');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('17', '25', 'Users', 'users');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('18', '25', 'Requested items', 'todolist');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('26', '12', 'Multiple Roles', 'multiple_roles');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('28', '16', 'Supplier List', 'supplier');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('29', '27', 'Expense', 'Expense');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('30', '18', 'Cheques', 'bank/written_cheque');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('31', '18', 'Banks', 'bank');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('34', '1', 'Pending stock', 'product/pending_stock');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('36', '6', 'Create invoice', 'invoice');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('37', '6', 'Return items', 'return_items');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('38', '5', 'Return report', 'sales_report/return_item_report');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('39', '20', 'Purchases', 'purchase');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('40', '21', 'Supply List', 'supply');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('41', '21', 'Drivers', 'supply/drivers');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('42', '21', 'Vehicles', 'supply/vehicle');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('43', '22', 'Brands', 'initilization');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('44', '22', 'Brand Sector', 'initilization/brand_sector');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('45', '22', 'Region', 'initilization/region');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('46', '22', 'Towns', 'initilization/town');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('47', '22', 'units', 'initilization/units');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('48', '22', 'Stores', 'initilization/stores');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('49', '1', 'Out of stock', 'stock_alert_report');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('50', '1', 'Recent expired', 'product/expired_list');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('51', '1', 'Stock ', 'product/product_stock');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('52', '1', 'Expired Stock', 'product/expired_stock');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('53', '16', 'Supplier payments', 'supplier/payment_list');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('54', '23', 'Customers ledger', 'customers/ledger');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('55', '23', 'Supplier legder', 'supplier/ledger');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('56', '20', 'Purchase return', 'purchase/return_list');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('57', '4', 'Customer payments', 'customers/payment_list ');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('58', '23', 'Chart of accounts', 'accounts');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('59', '24', 'General Journal', 'statements');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('60', '24', 'Ledger Account', 'statements/ledger_accounts');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('61', '24', 'Trail Balance', 'statements/trail_balance');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('62', '24', 'Income', 'statements/income_statement');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('63', '24', 'Balance Sheet', 'statements/balancesheet');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('64', '23', 'Journal Voucher', 'statements/journal_voucher');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('65', '23', 'Opening Balance', 'statements/opening_balance');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('66', '28', 'Customer Payments', 'customers/payment_list ');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('68', '25', 'Take Backup', 'backup');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('69', '25', 'Restore Backup', 'backup/upload_restore');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('70', '18', 'Bank Deposits', 'bank/deposit_list');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('71', '18', 'Bank Book', 'bank/bank_book');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('72', '26', 'Dashboard', 'homepage');
+INSERT INTO `mp_menulist` (`id`, `menu_id`, `title`, `link`) VALUES ('73', '25', 'Printer Settings', 'Printer_settings');
+
+
+#
+# TABLE STRUCTURE FOR: mp_multipleroles
+#
+
+DROP TABLE IF EXISTS `mp_multipleroles`;
+
+CREATE TABLE `mp_multipleroles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `menu_Id` int(11) NOT NULL,
+  `role` int(1) NOT NULL,
+  `agentid` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `menu_Id` (`menu_Id`),
+  KEY `agentid` (`agentid`)
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('36', '30', '6', '1', '24');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('37', '30', '1', '1', '24');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('39', '30', '5', '1', '24');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('46', '30', '12', '1', '24');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('48', '30', '3', '1', '24');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('50', '30', '16', '1', '24');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('51', '30', '2', '1', '24');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('52', '30', '18', '1', '24');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('53', '30', '20', '1', '30');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('54', '30', '21', '1', '30');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('55', '30', '22', '1', '30');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('56', '30', '23', '1', '30');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('57', '30', '24', '1', '30');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('58', '30', '25', '1', '30');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('59', '30', '26', '1', '30');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('60', '32', '1', '1', '30');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('61', '32', '26', '1', '30');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('62', '30', '9', '1', '30');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('63', '30', '27', '1', '30');
+INSERT INTO `mp_multipleroles` (`id`, `user_id`, `menu_Id`, `role`, `agentid`) VALUES ('64', '30', '28', '1', '30');
+
+
+#
+# TABLE STRUCTURE FOR: mp_payee
+#
+
+DROP TABLE IF EXISTS `mp_payee`;
+
+CREATE TABLE `mp_payee` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_name` varchar(50) NOT NULL,
+  `cus_email` varchar(50) NOT NULL,
+  `cus_password` varchar(255) NOT NULL,
+  `cus_address` varchar(255) NOT NULL,
+  `cus_contact_1` varchar(50) NOT NULL,
+  `cus_contact_2` varchar(50) NOT NULL,
+  `cus_company` varchar(50) NOT NULL,
+  `cus_description` varchar(100) NOT NULL,
+  `cus_picture` varchar(100) NOT NULL,
+  `cus_status` int(1) NOT NULL,
+  `cus_region` varchar(255) NOT NULL,
+  `cus_town` varchar(255) NOT NULL,
+  `cus_type` varchar(50) NOT NULL,
+  `cus_balance` decimal(11,2) NOT NULL,
+  `cus_date` date NOT NULL,
+  `customer_nationalid` varchar(255) NOT NULL,
+  `type` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_payee` (`id`, `customer_name`, `cus_email`, `cus_password`, `cus_address`, `cus_contact_1`, `cus_contact_2`, `cus_company`, `cus_description`, `cus_picture`, `cus_status`, `cus_region`, `cus_town`, `cus_type`, `cus_balance`, `cus_date`, `customer_nationalid`, `type`) VALUES ('2', 'Walk in ', 'walkin@gmail.com', '', '', '', '', '', '', 'default.jpg', '0', '', '', 'Regular', '0.00', '2018-04-10', '', 'customer');
+INSERT INTO `mp_payee` (`id`, `customer_name`, `cus_email`, `cus_password`, `cus_address`, `cus_contact_1`, `cus_contact_2`, `cus_company`, `cus_description`, `cus_picture`, `cus_status`, `cus_region`, `cus_town`, `cus_type`, `cus_balance`, `cus_date`, `customer_nationalid`, `type`) VALUES ('3', 'Abc', 'abc@gmail.com', '', 'Gulistan-e-Jauher Block 4A HOUSE NO 570', '03472394224', '03472394224', 'Pepsico', 'Here goes desccription', 'default.jpg', '0', 'Sindh', 'karachi', 'Regular', '0.00', '2018-04-11', '4220118099707', 'supplier');
+INSERT INTO `mp_payee` (`id`, `customer_name`, `cus_email`, `cus_password`, `cus_address`, `cus_contact_1`, `cus_contact_2`, `cus_company`, `cus_description`, `cus_picture`, `cus_status`, `cus_region`, `cus_town`, `cus_type`, `cus_balance`, `cus_date`, `customer_nationalid`, `type`) VALUES ('4', 'Muhammad Ibrahim', 'leofriend4all@yahoo.com', '', 'Gulistan-e-Jauher Block 4A HOUSE NO 570', '03472394224', '', '', '', 'default.jpg', '0', 'Sindh', 'KARACHI', 'Regular', '0.00', '2018-04-19', '', 'customer');
+INSERT INTO `mp_payee` (`id`, `customer_name`, `cus_email`, `cus_password`, `cus_address`, `cus_contact_1`, `cus_contact_2`, `cus_company`, `cus_description`, `cus_picture`, `cus_status`, `cus_region`, `cus_town`, `cus_type`, `cus_balance`, `cus_date`, `customer_nationalid`, `type`) VALUES ('5', 'Peter Jhonson', 'jhon@gmail.com', '', '11th commercial street', '03472394224', '03472394224', 'GB', 'Here goes desccription', 'default.jpg', '0', 'Sindh', 'karachi', 'Regular', '0.00', '2018-04-17', '4220118099707', 'customer');
+
+
+#
+# TABLE STRUCTURE FOR: mp_printer
+#
+
+DROP TABLE IF EXISTS `mp_printer`;
+
+CREATE TABLE `mp_printer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `printer_name` varchar(255) NOT NULL,
+  `fontsize` int(11) NOT NULL,
+  `set_default` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_printer` (`id`, `printer_name`, `fontsize`, `set_default`) VALUES ('6', 'Black Copper BC-85AC', '1', '1');
+INSERT INTO `mp_printer` (`id`, `printer_name`, `fontsize`, `set_default`) VALUES ('7', 'test', '3', '0');
+
+
+#
+# TABLE STRUCTURE FOR: mp_purchase
+#
+
+DROP TABLE IF EXISTS `mp_purchase`;
+
+CREATE TABLE `mp_purchase` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `transaction_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `supplier_id` int(11) NOT NULL,
+  `store` int(11) NOT NULL,
+  `invoice_id` int(11) NOT NULL,
+  `description` longtext NOT NULL,
+  `total_amount` decimal(11,2) NOT NULL,
+  `payment_type_id` varchar(50) NOT NULL,
+  `payment_date` date NOT NULL,
+  `cash` decimal(11,2) NOT NULL,
+  `cus_picture` varchar(255) NOT NULL,
+  `status` int(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `transaction_id` (`transaction_id`),
+  KEY `supplier_id` (`supplier_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_purchase` (`id`, `transaction_id`, `date`, `supplier_id`, `store`, `invoice_id`, `description`, `total_amount`, `payment_type_id`, `payment_date`, `cash`, `cus_picture`, `status`) VALUES ('1', '10', '2018-04-16', '3', '2', '1', 'here goes description', '200.00', 'Cash', '2018-04-16', '200.00', 'default.jpg', '0');
+INSERT INTO `mp_purchase` (`id`, `transaction_id`, `date`, `supplier_id`, `store`, `invoice_id`, `description`, `total_amount`, `payment_type_id`, `payment_date`, `cash`, `cus_picture`, `status`) VALUES ('2', '11', '2018-04-16', '3', '2', '0', 'here goes description', '10.00', 'Cash', '2018-04-16', '10.00', 'default.jpg', '1');
+INSERT INTO `mp_purchase` (`id`, `transaction_id`, `date`, `supplier_id`, `store`, `invoice_id`, `description`, `total_amount`, `payment_type_id`, `payment_date`, `cash`, `cus_picture`, `status`) VALUES ('3', '12', '2018-04-16', '3', '2', '2', 'here goes description', '100.00', 'Cash', '2018-04-16', '0.00', 'default.jpg', '0');
+INSERT INTO `mp_purchase` (`id`, `transaction_id`, `date`, `supplier_id`, `store`, `invoice_id`, `description`, `total_amount`, `payment_type_id`, `payment_date`, `cash`, `cus_picture`, `status`) VALUES ('4', '50', '2018-04-17', '3', '2', '0', 'here goes description', '15.00', 'Cash', '2018-04-17', '10.00', 'default.jpg', '0');
+INSERT INTO `mp_purchase` (`id`, `transaction_id`, `date`, `supplier_id`, `store`, `invoice_id`, `description`, `total_amount`, `payment_type_id`, `payment_date`, `cash`, `cus_picture`, `status`) VALUES ('5', '60', '2018-04-17', '3', '2', '36', 'here goes description', '13.00', 'Cash', '2018-04-17', '13.00', 'default.jpg', '0');
+INSERT INTO `mp_purchase` (`id`, `transaction_id`, `date`, `supplier_id`, `store`, `invoice_id`, `description`, `total_amount`, `payment_type_id`, `payment_date`, `cash`, `cus_picture`, `status`) VALUES ('8', '75', '2018-04-18', '3', '2', '366', 'here goes description', '5.50', 'Cheque', '2018-04-18', '5.50', 'default.jpg', '0');
+INSERT INTO `mp_purchase` (`id`, `transaction_id`, `date`, `supplier_id`, `store`, `invoice_id`, `description`, `total_amount`, `payment_type_id`, `payment_date`, `cash`, `cus_picture`, `status`) VALUES ('10', '77', '2018-04-18', '3', '2', '889', 'here goes description', '2.20', 'Cash', '2018-04-18', '2.20', 'default.jpg', '0');
+INSERT INTO `mp_purchase` (`id`, `transaction_id`, `date`, `supplier_id`, `store`, `invoice_id`, `description`, `total_amount`, `payment_type_id`, `payment_date`, `cash`, `cus_picture`, `status`) VALUES ('11', '78', '2018-04-18', '3', '2', '255', 'here goes description', '2.60', 'Cash', '2018-04-18', '2.60', 'default.jpg', '1');
+INSERT INTO `mp_purchase` (`id`, `transaction_id`, `date`, `supplier_id`, `store`, `invoice_id`, `description`, `total_amount`, `payment_type_id`, `payment_date`, `cash`, `cus_picture`, `status`) VALUES ('12', '79', '2018-04-18', '3', '2', '699', 'here goes description', '2.89', 'Cheque', '2018-04-18', '2.89', 'default.jpg', '1');
+INSERT INTO `mp_purchase` (`id`, `transaction_id`, `date`, `supplier_id`, `store`, `invoice_id`, `description`, `total_amount`, `payment_type_id`, `payment_date`, `cash`, `cus_picture`, `status`) VALUES ('13', '80', '2018-04-18', '3', '2', '255', 'here goes description', '10.00', 'Cheque', '2018-04-18', '10.00', 'default.jpg', '0');
+INSERT INTO `mp_purchase` (`id`, `transaction_id`, `date`, `supplier_id`, `store`, `invoice_id`, `description`, `total_amount`, `payment_type_id`, `payment_date`, `cash`, `cus_picture`, `status`) VALUES ('14', '122', '2018-04-19', '3', '2', '366', 'here goes description', '125.00', 'Cheque', '2018-04-19', '125.00', 'default.jpg', '1');
+
+
+#
+# TABLE STRUCTURE FOR: mp_region
+#
+
+DROP TABLE IF EXISTS `mp_region`;
+
+CREATE TABLE `mp_region` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_region` (`id`, `name`, `code`) VALUES ('1', 'East Karachi', '4450');
+
+
+#
+# TABLE STRUCTURE FOR: mp_return
+#
+
+DROP TABLE IF EXISTS `mp_return`;
+
+CREATE TABLE `mp_return` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `transaction_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `cus_id` int(11) NOT NULL,
+  `agent` varchar(255) NOT NULL,
+  `invoice_id` int(11) NOT NULL,
+  `return_amount` decimal(11,2) NOT NULL,
+  `total_bill` decimal(11,2) NOT NULL,
+  `discount_given` decimal(11,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `transaction_id` (`transaction_id`),
+  KEY `cus_id` (`cus_id`),
+  KEY `invoice_id` (`invoice_id`),
+  CONSTRAINT `return_customer_fk` FOREIGN KEY (`cus_id`) REFERENCES `mp_payee` (`id`),
+  CONSTRAINT `return_invoice_id` FOREIGN KEY (`invoice_id`) REFERENCES `mp_invoices` (`id`),
+  CONSTRAINT `return_transaction_general_fk` FOREIGN KEY (`transaction_id`) REFERENCES `mp_generalentry` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_return` (`id`, `transaction_id`, `date`, `cus_id`, `agent`, `invoice_id`, `return_amount`, `total_bill`, `discount_given`) VALUES ('1', '3', '2018-04-16', '4', 'Pencil', '1', '300.00', '300.00', '0.00');
+INSERT INTO `mp_return` (`id`, `transaction_id`, `date`, `cus_id`, `agent`, `invoice_id`, `return_amount`, `total_bill`, `discount_given`) VALUES ('2', '4', '2018-04-16', '2', 'Pencil', '1', '0.00', '30.00', '0.00');
+INSERT INTO `mp_return` (`id`, `transaction_id`, `date`, `cus_id`, `agent`, `invoice_id`, `return_amount`, `total_bill`, `discount_given`) VALUES ('3', '5', '2018-04-16', '4', 'Pencil', '1', '0.00', '30.00', '0.00');
+
+
+#
+# TABLE STRUCTURE FOR: mp_return_list
+#
+
+DROP TABLE IF EXISTS `mp_return_list`;
+
+CREATE TABLE `mp_return_list` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `return_id` int(11) NOT NULL,
+  `barcode` varchar(255) NOT NULL,
+  `product_no` varchar(255) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `mg` varchar(255) NOT NULL,
+  `price` decimal(11,2) NOT NULL,
+  `purchase` decimal(11,2) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `tax` decimal(11,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `transaction_id` (`return_id`),
+  KEY `medicine_id` (`product_id`),
+  CONSTRAINT `return_item_fk` FOREIGN KEY (`return_id`) REFERENCES `mp_return` (`id`),
+  CONSTRAINT `return_product_id` FOREIGN KEY (`product_id`) REFERENCES `mp_productslist` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_return_list` (`id`, `return_id`, `barcode`, `product_no`, `product_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('1', '1', '4587233658', 'XL-240', '1', 'Aquafina', '', '30.00', '25.00', '10', '0.00');
+INSERT INTO `mp_return_list` (`id`, `return_id`, `barcode`, `product_no`, `product_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('2', '2', '4587233658', 'XL-240', '1', 'Aquafina', '', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_return_list` (`id`, `return_id`, `barcode`, `product_no`, `product_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('3', '3', '4587233658', 'XL-240', '1', 'Aquafina', '', '30.00', '25.00', '1', '0.00');
+
+
+#
+# TABLE STRUCTURE FOR: mp_sales
+#
+
+DROP TABLE IF EXISTS `mp_sales`;
+
+CREATE TABLE `mp_sales` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL,
+  `product_no` varchar(255) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `product_name` varchar(100) NOT NULL,
+  `mg` int(11) NOT NULL,
+  `price` decimal(11,2) NOT NULL,
+  `purchase` decimal(11,2) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `tax` decimal(11,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `medicine_id` (`product_id`),
+  KEY `order_id` (`order_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('1', '1', 'XL-240', '1', 'Aquafina', '0', '30.00', '25.00', '50', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('2', '10', 'XL-250', '2', 'Safegaurd', '250', '55.00', '45.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('3', '1', 'XL-240', '3', 'Aquafina', '0', '30.00', '25.00', '50', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('4', '8', 'XL-250', '4', 'Bonus', '250', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('5', '8', 'XL-250', '5', 'Bonus', '250', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('6', '10', 'XL-250', '6', 'Safegaurd', '250', '420.00', '45.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('7', '7', 'XL-250', '6', 'Arial', '250', '420.00', '40.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('8', '8', 'XL-250', '6', 'Bonus', '250', '420.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('9', '8', 'XL-250', '7', 'Bonus', '250', '420.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('10', '10', 'XL-250', '7', 'Safegaurd', '250', '420.00', '45.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('11', '7', 'XL-250', '7', 'Arial', '250', '420.00', '40.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('12', '10', 'XL-250', '8', 'Safegaurd', '250', '420.00', '45.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('13', '7', 'XL-250', '8', 'Arial', '250', '420.00', '40.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('14', '8', 'XL-250', '8', 'Bonus', '250', '420.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('15', '10', 'XL-250', '9', 'Safegaurd', '250', '420.00', '45.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('16', '7', 'XL-250', '9', 'Arial', '250', '420.00', '40.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('17', '8', 'XL-250', '9', 'Bonus', '250', '420.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('18', '10', 'XL-250', '10', 'Safegaurd', '250', '420.00', '45.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('19', '8', 'XL-250', '10', 'Bonus', '250', '420.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('20', '7', 'XL-250', '10', 'Arial', '250', '420.00', '40.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('21', '10', 'XL-250', '11', 'Safegaurd', '250', '420.00', '45.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('22', '7', 'XL-250', '11', 'Arial', '250', '420.00', '40.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('23', '8', 'XL-250', '11', 'Bonus', '250', '420.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('24', '10', 'XL-250', '12', 'Safegaurd', '250', '420.00', '45.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('25', '7', 'XL-250', '12', 'Arial', '250', '420.00', '40.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('26', '8', 'XL-250', '12', 'Bonus', '250', '420.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('27', '10', 'XL-250', '13', 'Safegaurd', '250', '35.00', '45.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('28', '7', 'XL-250', '13', 'Arial', '250', '35.00', '40.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('29', '8', 'XL-250', '13', 'Bonus', '250', '35.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('30', '7', 'XL-250', '14', 'Arial', '250', '35.00', '40.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('31', '9', 'XL-250', '15', 'Lux', '250', '35.00', '35.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('32', '9', 'XL-250', '16', 'Lux', '250', '35.00', '35.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('33', '1', 'XL-240', '16', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('34', '1', 'XL-240', '17', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('35', '1', 'XL-240', '18', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('36', '1', 'XL-240', '19', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('37', '2', 'XL-240', '19', 'Milk Pack', '250', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('38', '6', 'XL-250', '19', 'Serf Excel', '250', '35.00', '70.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('39', '1', 'XL-240', '20', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('40', '3', 'XL-250', '20', 'Pepsi', '250', '35.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('41', '6', 'XL-250', '20', 'Serf Excel', '250', '11.67', '70.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('42', '2', 'XL-240', '21', 'Milk Pack', '250', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('43', '1', 'XL-240', '21', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('44', '6', 'XL-250', '21', 'Serf Excel', '250', '35.00', '70.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('45', '1', 'XL-240', '22', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('46', '2', 'XL-240', '22', 'Milk Pack', '250', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('47', '1', 'XL-240', '23', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('48', '1', 'XL-240', '24', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('49', '2', 'XL-240', '24', 'Milk Pack', '250', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('50', '1', 'XL-240', '25', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('51', '2', 'XL-240', '25', 'Milk Pack', '250', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('52', '1', 'XL-240', '26', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('53', '2', 'XL-240', '26', 'Milk Pack', '250', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('54', '1', 'XL-240', '27', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('55', '2', 'XL-240', '27', 'Milk Pack', '250', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('56', '1', 'XL-240', '28', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('57', '2', 'XL-240', '28', 'Milk Pack', '250', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('58', '1', 'XL-240', '29', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('59', '2', 'XL-240', '29', 'Milk Pack', '250', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('60', '1', 'XL-240', '30', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('61', '2', 'XL-240', '30', 'Milk Pack', '250', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('62', '6', 'XL-250', '30', 'Serf Excel', '250', '35.00', '70.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('63', '1', 'XL-240', '31', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('64', '2', 'XL-240', '31', 'Milk Pack', '250', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('65', '6', 'XL-250', '31', 'Serf Excel', '250', '35.00', '70.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('66', '1', 'XL-240', '32', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('67', '2', 'XL-240', '32', 'Milk Pack', '250', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('68', '6', 'XL-250', '32', 'Serf Excel', '250', '35.00', '70.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('69', '1', 'XL-240', '33', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('70', '2', 'XL-240', '33', 'Milk Pack', '250', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('71', '6', 'XL-250', '33', 'Serf Excel', '250', '35.00', '70.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('72', '1', 'XL-240', '34', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('73', '2', 'XL-240', '34', 'Milk Pack', '250', '30.00', '25.00', '24', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('74', '6', 'XL-250', '34', 'Serf Excel', '250', '35.00', '70.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('75', '1', 'XL-240', '35', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('76', '1', 'XL-240', '36', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('77', '1', 'XL-240', '37', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('78', '1', 'XL-240', '38', 'Aquafina', '0', '15.00', '25.00', '24', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('79', '1', 'XL-240', '39', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('80', '1', 'XL-240', '40', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('81', '1', 'XL-240', '41', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('82', '1', 'XL-240', '42', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('83', '1', 'XL-240', '43', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('84', '1', 'XL-240', '44', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('85', '1', 'XL-240', '45', 'Aquafina', '0', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('86', '2', 'XL-240', '45', 'Milk Pack', '250', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('87', '6', 'XL-250', '45', 'Serf Excel', '250', '35.00', '70.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('88', '1', 'XL-240', '46', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('89', '6', 'XL-250', '46', 'Serf Excel', '250', '35.00', '70.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('90', '4', 'XL-250', '46', 'Sprite', '250', '35.00', '30.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('91', '3', 'XL-250', '46', 'Pepsi', '250', '35.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('92', '1', 'XL-240', '47', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('93', '1', 'XL-240', '48', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('94', '1', 'XL-240', '49', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('95', '1', 'XL-240', '50', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('99', '1', 'XL-240', '52', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('100', '3', 'XL-250', '52', 'Pepsi', '250', '35.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('101', '2', 'XL-240', '52', 'Milk Pack', '250', '30.00', '25.00', '24', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('102', '1', 'XL-240', '53', 'Aquafina', '0', '5.00', '25.00', '72', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('103', '1', 'XL-240', '54', 'Aquafina', '0', '30.00', '25.00', '12', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('104', '1', 'XL-240', '55', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('105', '1', 'XL-240', '56', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('106', '1', 'XL-240', '57', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('107', '1', 'XL-240', '58', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('108', '1', 'XL-240', '59', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('109', '1', 'XL-240', '60', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('110', '1', 'XL-240', '61', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('111', '1', 'XL-240', '62', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('112', '1', 'XL-240', '63', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('113', '1', 'XL-240', '64', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('114', '2', 'XL-240', '64', 'Milk Pack', '250', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('115', '1', 'XL-240', '65', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('116', '2', 'XL-240', '65', 'Milk Pack', '250', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('117', '1', 'XL-240', '66', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('118', '2', 'XL-240', '66', 'Milk Pack', '250', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('119', '1', 'XL-240', '67', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('120', '1', 'XL-240', '68', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('121', '1', 'XL-240', '69', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('122', '1', 'XL-240', '70', 'Aquafina', '0', '30.00', '25.00', '1', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('123', '2', 'XL-240', '71', 'Milk Pack', '250', '30.00', '25.00', '0', '0.00');
+INSERT INTO `mp_sales` (`id`, `product_id`, `product_no`, `order_id`, `product_name`, `mg`, `price`, `purchase`, `qty`, `tax`) VALUES ('124', '2', 'XL-240', '72', 'Milk Pack', '250', '30.00', '25.00', '0', '0.00');
+
+
+#
+# TABLE STRUCTURE FOR: mp_stock
+#
+
+DROP TABLE IF EXISTS `mp_stock`;
+
+CREATE TABLE `mp_stock` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `mid` int(11) NOT NULL,
+  `manufacturing` date NOT NULL,
+  `expiry` date NOT NULL,
+  `qty` int(11) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `date` date NOT NULL,
+  `added` varchar(255) NOT NULL,
+  `purchase` decimal(11,2) NOT NULL,
+  `selling` decimal(11,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `mid` (`mid`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_stock` (`id`, `mid`, `manufacturing`, `expiry`, `qty`, `description`, `date`, `added`, `purchase`, `selling`) VALUES ('1', '4', '2018-04-16', '2018-05-25', '48', 'Internal Notes', '2018-04-16', 'Pencil', '0.00', '0.00');
+
+
+#
+# TABLE STRUCTURE FOR: mp_stores
+#
+
+DROP TABLE IF EXISTS `mp_stores`;
+
+CREATE TABLE `mp_stores` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_stores` (`id`, `name`, `code`, `address`) VALUES ('2', 'Muhammad Ibrahim', '4500', 'Gulistan-e-Jauher Block 4A HOUSE NO 570');
+
+
+#
+# TABLE STRUCTURE FOR: mp_sub_entry
+#
+
+DROP TABLE IF EXISTS `mp_sub_entry`;
+
+CREATE TABLE `mp_sub_entry` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) NOT NULL,
+  `accounthead` int(11) NOT NULL,
+  `amount` decimal(11,2) NOT NULL,
+  `type` int(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sid` (`parent_id`),
+  KEY `accounthead` (`accounthead`),
+  KEY `amount` (`amount`)
+) ENGINE=InnoDB AUTO_INCREMENT=362 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('1', '1', '2', '1500.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('2', '1', '3', '1500.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('3', '2', '2', '55.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('4', '2', '3', '55.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('5', '3', '3', '300.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('6', '3', '2', '300.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('7', '4', '3', '30.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('8', '4', '5', '30.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('9', '5', '3', '30.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('10', '5', '5', '30.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('11', '6', '4', '1500.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('12', '6', '3', '1500.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('13', '7', '2', '25.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('14', '7', '3', '25.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('15', '8', '2', '25.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('16', '8', '3', '25.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('17', '9', '2', '1200.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('18', '9', '4', '1200.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('19', '10', '3', '200.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('20', '10', '2', '200.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('21', '11', '2', '10.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('22', '11', '3', '10.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('23', '12', '3', '100.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('24', '12', '2', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('25', '12', '5', '100.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('26', '13', '5', '100.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('27', '13', '2', '100.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('28', '14', '6', '120.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('29', '14', '2', '120.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('30', '15', '15', '12.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('31', '15', '2', '5.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('32', '15', '5', '7.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('34', '17', '16', '5000.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('35', '17', '3', '5000.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('36', '18', '2', '10.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('37', '18', '4', '10.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('38', '19', '1', '10.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('41', '21', '2', '1230.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('42', '21', '4', '1230.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('43', '20', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('44', '20', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('48', '22', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('49', '22', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('53', '23', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('54', '23', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('57', '24', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('58', '24', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('62', '25', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('63', '25', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('67', '26', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('68', '26', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('72', '27', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('73', '27', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('74', '28', '2', '1260.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('75', '28', '4', '-1259.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('76', '28', '3', '1.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('77', '29', '2', '420.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('78', '29', '3', '420.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('79', '30', '2', '420.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('80', '30', '3', '420.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('81', '31', '2', '780.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('82', '31', '3', '780.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('91', '34', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('92', '34', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('93', '33', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('94', '33', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('95', '32', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('96', '32', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('100', '35', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('101', '35', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('105', '36', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('106', '36', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('110', '37', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('111', '37', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('114', '38', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('115', '38', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('119', '39', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('120', '39', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('124', '40', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('125', '40', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('129', '41', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('130', '41', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('134', '42', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('135', '42', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('139', '43', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('140', '43', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('143', '44', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('144', '44', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('147', '45', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('148', '45', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('151', '46', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('152', '46', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('156', '47', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('157', '47', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('160', '48', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('161', '48', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('164', '50', '3', '15.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('165', '50', '2', '10.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('166', '50', '5', '5.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('172', '54', '15', '12.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('173', '54', '16', '12.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('174', '55', '15', '12.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('175', '55', '2', '12.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('176', '56', '15', '5.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('177', '56', '16', '5.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('178', '57', '15', '7.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('179', '57', '16', '7.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('180', '58', '15', '10.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('181', '58', '16', '9.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('182', '58', '5', '1.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('183', '59', '1', '100.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('184', '59', '16', '100.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('185', '60', '3', '13.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('186', '60', '2', '13.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('189', '62', '13', '15.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('190', '62', '16', '15.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('191', '49', '2', '1500.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('192', '49', '3', '1500.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('193', '63', '2', '30.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('194', '63', '3', '30.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('195', '64', '15', '19.65', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('196', '64', '16', '15.89', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('197', '64', '5', '3.76', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('198', '65', '16', '500.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('199', '65', '5', '500.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('200', '66', '16', '500.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('201', '66', '1', '500.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('202', '67', '1', '300.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('203', '67', '16', '300.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('204', '68', '14', '5.50', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('205', '68', '2', '5.50', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('211', '71', '14', '2.30', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('212', '71', '2', '2.30', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('213', '72', '14', '2.50', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('214', '72', '16', '2.40', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('215', '72', '5', '0.10', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('220', '75', '3', '5.50', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('221', '75', '16', '5.50', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('224', '77', '3', '2.20', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('225', '77', '2', '2.20', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('226', '78', '2', '2.60', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('227', '78', '3', '2.60', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('228', '79', '2', '2.89', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('229', '79', '3', '2.89', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('230', '80', '3', '10.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('231', '80', '16', '10.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('236', '83', '5', '120.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('237', '83', '16', '120.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('238', '84', '5', '1.59', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('239', '84', '16', '1.59', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('242', '86', '5', '2.54', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('243', '86', '2', '2.54', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('244', '87', '16', '1.45', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('245', '87', '4', '1.45', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('246', '88', '2', '2.56', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('247', '88', '4', '2.56', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('248', '89', '2', '253.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('249', '89', '4', '253.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('250', '90', '16', '120.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('251', '90', '4', '120.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('252', '91', '16', '145.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('253', '91', '4', '145.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('254', '92', '16', '350.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('255', '92', '3', '350.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('256', '93', '2', '360.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('257', '93', '3', '360.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('258', '94', '2', '720.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('259', '94', '3', '720.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('260', '95', '2', '350.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('261', '95', '3', '350.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('262', '96', '16', '360.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('263', '96', '3', '360.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('264', '97', '16', '360.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('265', '97', '3', '360.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('266', '98', '16', '360.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('267', '98', '3', '360.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('268', '99', '2', '360.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('269', '99', '3', '360.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('270', '100', '16', '360.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('271', '100', '3', '360.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('274', '101', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('275', '101', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('276', '102', '16', '1420.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('277', '102', '3', '1420.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('278', '103', '2', '300.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('279', '103', '3', '300.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('280', '104', '2', '300.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('281', '104', '3', '300.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('282', '105', '2', '360.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('283', '105', '3', '360.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('284', '106', '2', '360.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('285', '106', '3', '360.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('288', '108', '16', '1500.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('289', '108', '3', '1500.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('290', '109', '16', '2160.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('291', '109', '3', '2160.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('292', '110', '16', '350.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('293', '110', '3', '350.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('294', '111', '16', '300.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('295', '111', '3', '300.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('296', '112', '1', '34.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('297', '112', '16', '34.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('298', '113', '1', '45.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('299', '113', '16', '45.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('300', '114', '3', '100.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('301', '114', '16', '100.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('302', '115', '16', '455.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('303', '115', '1', '455.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('304', '116', '16', '360.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('305', '116', '3', '360.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('306', '117', '3', '566.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('307', '117', '16', '566.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('308', '118', '16', '4000.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('309', '118', '1', '4000.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('310', '119', '1', '100.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('311', '119', '16', '100.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('312', '120', '1', '150.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('313', '120', '16', '150.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('314', '121', '3', '100.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('315', '121', '16', '100.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('316', '122', '2', '125.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('317', '122', '3', '125.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('318', '123', '2', '30.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('319', '123', '3', '30.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('320', '124', '2', '30.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('321', '124', '3', '30.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('322', '125', '2', '30.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('323', '125', '3', '30.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('326', '126', '2', '30.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('327', '126', '3', '30.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('328', '127', '2', '30.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('329', '127', '3', '30.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('330', '128', '2', '30.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('331', '128', '3', '30.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('332', '129', '2', '30.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('333', '129', '3', '30.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('334', '130', '2', '30.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('335', '130', '3', '30.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('336', '131', '2', '30.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('337', '131', '3', '30.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('338', '132', '2', '50.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('339', '132', '3', '50.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('340', '133', '2', '60.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('341', '133', '3', '60.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('342', '134', '2', '60.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('343', '134', '3', '60.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('344', '135', '2', '30.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('345', '135', '3', '30.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('346', '136', '2', '30.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('347', '136', '3', '30.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('348', '137', '2', '30.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('349', '137', '3', '30.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('350', '138', '2', '30.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('351', '138', '3', '30.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('354', '139', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('355', '139', '3', '0.00', '1');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('360', '140', '2', '0.00', '0');
+INSERT INTO `mp_sub_entry` (`id`, `parent_id`, `accounthead`, `amount`, `type`) VALUES ('361', '140', '3', '0.00', '1');
+
+
+#
+# TABLE STRUCTURE FOR: mp_supplier_payments
+#
+
+DROP TABLE IF EXISTS `mp_supplier_payments`;
+
+CREATE TABLE `mp_supplier_payments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `transaction_id` int(11) NOT NULL,
+  `supplier_id` int(11) NOT NULL,
+  `amount` decimal(11,2) NOT NULL,
+  `method` varchar(255) NOT NULL,
+  `date` date NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `agentname` varchar(50) NOT NULL,
+  `mode` int(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `transaction_id` (`transaction_id`),
+  KEY `supplier_id` (`supplier_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_supplier_payments` (`id`, `transaction_id`, `supplier_id`, `amount`, `method`, `date`, `description`, `agentname`, `mode`) VALUES ('1', '13', '3', '100.00', 'Cash', '2018-04-16', 'descrition', 'Pencil', '0');
+INSERT INTO `mp_supplier_payments` (`id`, `transaction_id`, `supplier_id`, `amount`, `method`, `date`, `description`, `agentname`, `mode`) VALUES ('4', '83', '3', '120.00', 'Cheque', '2018-04-18', 'hjkhjkjh', 'Pencil', '0');
+INSERT INTO `mp_supplier_payments` (`id`, `transaction_id`, `supplier_id`, `amount`, `method`, `date`, `description`, `agentname`, `mode`) VALUES ('5', '84', '3', '1.59', 'Cheque', '2018-04-18', 'descrition', 'Pencil', '0');
+INSERT INTO `mp_supplier_payments` (`id`, `transaction_id`, `supplier_id`, `amount`, `method`, `date`, `description`, `agentname`, `mode`) VALUES ('7', '86', '3', '2.54', 'Cash', '2018-04-18', 'descrition', 'Pencil', '0');
+INSERT INTO `mp_supplier_payments` (`id`, `transaction_id`, `supplier_id`, `amount`, `method`, `date`, `description`, `agentname`, `mode`) VALUES ('8', '87', '3', '1.45', 'Cheque', '2018-04-18', 'descrition', 'Pencil', '1');
+INSERT INTO `mp_supplier_payments` (`id`, `transaction_id`, `supplier_id`, `amount`, `method`, `date`, `description`, `agentname`, `mode`) VALUES ('9', '88', '3', '2.56', 'Cash', '2018-04-18', 'descrition', 'Pencil', '1');
+
+
+#
+# TABLE STRUCTURE FOR: mp_supply
+#
+
+DROP TABLE IF EXISTS `mp_supply`;
+
+CREATE TABLE `mp_supply` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `driver_id` int(11) NOT NULL,
+  `vehicle_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `region_id` int(11) NOT NULL,
+  `town_id` int(11) NOT NULL,
+  `expense` decimal(11,2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+#
+# TABLE STRUCTURE FOR: mp_tempinvoices
+#
+
+DROP TABLE IF EXISTS `mp_tempinvoices`;
+
+CREATE TABLE `mp_tempinvoices` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  `cus_picture` varchar(255) NOT NULL,
+  `discount` decimal(11,2) NOT NULL,
+  `shippingcharges` decimal(11,2) NOT NULL,
+  `status` int(1) NOT NULL,
+  `cus_id` int(11) NOT NULL,
+  `delivered_to` varchar(100) NOT NULL,
+  `delivered_by` varchar(100) NOT NULL,
+  `delivered_date` date NOT NULL,
+  `delivered_description` varchar(255) NOT NULL,
+  `prescription_id` int(11) NOT NULL,
+  `agentname` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cus_id` (`cus_id`),
+  KEY `prescription_id` (`prescription_id`),
+  KEY `agentname` (`agentname`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+#
+# TABLE STRUCTURE FOR: mp_temp_barcoder_invoice
+#
+
+DROP TABLE IF EXISTS `mp_temp_barcoder_invoice`;
+
+CREATE TABLE `mp_temp_barcoder_invoice` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `barcode` varchar(255) NOT NULL,
+  `product_no` varchar(255) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `mg` varchar(255) NOT NULL,
+  `price` decimal(11,2) NOT NULL,
+  `purchase` decimal(11,2) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `tax` double(11,2) NOT NULL,
+  `agentid` int(11) NOT NULL,
+  `source` varchar(50) NOT NULL,
+  `pack` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+#
+# TABLE STRUCTURE FOR: mp_todolist
+#
+
+DROP TABLE IF EXISTS `mp_todolist`;
+
+CREATE TABLE `mp_todolist` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `date` date NOT NULL,
+  `addedby` varchar(255) NOT NULL,
+  `status` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `addedby` (`addedby`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+#
+# TABLE STRUCTURE FOR: mp_town
+#
+
+DROP TABLE IF EXISTS `mp_town`;
+
+CREATE TABLE `mp_town` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `region` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_town` (`id`, `name`, `region`) VALUES ('1', 'Gulshan', 'East Karachi');
+
+
+#
+# TABLE STRUCTURE FOR: mp_units
+#
+
+DROP TABLE IF EXISTS `mp_units`;
+
+CREATE TABLE `mp_units` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `symbol` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `symbol` (`symbol`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_units` (`id`, `name`, `symbol`) VALUES ('1', 'Litre', 'ltr');
+
+
+#
+# TABLE STRUCTURE FOR: mp_users
+#
+
+DROP TABLE IF EXISTS `mp_users`;
+
+CREATE TABLE `mp_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(50) NOT NULL,
+  `user_email` varchar(50) NOT NULL,
+  `user_address` varchar(100) NOT NULL,
+  `user_contact_1` varchar(50) NOT NULL,
+  `user_contact_2` varchar(50) NOT NULL,
+  `cus_picture` varchar(255) NOT NULL,
+  `status` int(1) NOT NULL,
+  `user_description` varchar(100) NOT NULL,
+  `user_password` varchar(255) NOT NULL,
+  `user_date` date NOT NULL,
+  `agentname` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_name` (`user_name`),
+  KEY `user_name_2` (`user_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_users` (`id`, `user_name`, `user_email`, `user_address`, `user_contact_1`, `user_contact_2`, `cus_picture`, `status`, `user_description`, `user_password`, `user_date`, `agentname`) VALUES ('30', 'Pencil', 'admin@medix.net', '21th street 72 Avenue park land ', '923472394224', '923472394224', 'cbaf8d854b562ebee2c553bbc50b3b30.png', '0', 'admin', '8cb2237d0679ca88db6464eac60da96345513964', '2017-08-23', 'Medix');
+
+
+#
+# TABLE STRUCTURE FOR: mp_vehicle
+#
+
+DROP TABLE IF EXISTS `mp_vehicle`;
+
+CREATE TABLE `mp_vehicle` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `number` varchar(255) NOT NULL,
+  `vehicle_id` varchar(255) NOT NULL,
+  `chase_no` varchar(255) NOT NULL,
+  `engine_no` varchar(255) NOT NULL,
+  `date` date NOT NULL,
+  `status` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+INSERT INTO `mp_vehicle` (`id`, `name`, `number`, `vehicle_id`, `chase_no`, `engine_no`, `date`, `status`) VALUES ('2', 'Toyota', 'FAD-5897', 'Toyota', '4220118225887', '12369875', '2018-04-17', '0');
+
+
+SET foreign_key_checks = 1;
